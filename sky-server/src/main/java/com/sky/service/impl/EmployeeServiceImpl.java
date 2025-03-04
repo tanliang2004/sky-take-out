@@ -77,8 +77,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = new Employee();
         //将employeeDTO类拷贝到employee
         BeanUtils.copyProperties(employeeDTO, employee);
-        //设置员工初始化密码
-        employee.setPassword(PasswordConstant.DEFAULT_PASSWORD);
+        //设置员工初始化密码（进行MD5加密）
+        String password = DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes());
+        employee.setPassword(password);
         //设置员工账号状态 1：启用 0：禁用
         employee.setStatus(StatusConstant.ENABLE);
         //设置创建时间
@@ -106,7 +107,20 @@ public class EmployeeServiceImpl implements EmployeeService {
         Page<Employee> page = employeeMapper.selectAll(employeePageQueryDTO);
         long total = page.getTotal();
         List<Employee> result = page.getResult();
-        return new PageResult(total,result);
+        return new PageResult(total, result);
     }
 
+    /**
+     * 员工账号启用和禁用
+     *
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrShut(Integer status, Long id) {
+        //为了代码简洁，将所有对员工信息修改的操作都使用一条SQL命令
+        //使用动态SQL对员工信息进行修改
+        Employee emp = Employee.builder().status(status).id(id).build();
+        employeeMapper.updateEmp(emp);
+    }
 }
