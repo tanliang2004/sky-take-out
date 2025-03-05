@@ -43,7 +43,7 @@ public interface EmployeeService {
      * 根据id查询员工
      * @param id
      */
-    Employee queryById(Integer id);
+    Employee queryById(Long id);
 
     /**
      * 修改员工信息

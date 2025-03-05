@@ -132,7 +132,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param id
      */
     @Override
-    public Employee queryById(Integer id) {
+    public Employee queryById(Long id) {
         Employee employee = employeeMapper.selectById(id);
         return employee;
     }
