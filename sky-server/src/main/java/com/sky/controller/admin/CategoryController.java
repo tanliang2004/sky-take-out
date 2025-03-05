@@ -55,4 +55,16 @@ public class CategoryController {
         categoryService.startOrShut(status,id);
         return Result.success();
     }
+
+    /**
+     * 新增分类
+     * @param categoryDTO
+     * @return
+     */
+    @PostMapping
+    @ApiOperation(value = "新增分类")
+    public Result addCategory(@RequestBody CategoryDTO categoryDTO) {
+        categoryService.addCategory(categoryDTO);
+        return Result.success();
+    }
 }

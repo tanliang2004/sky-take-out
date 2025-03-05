@@ -19,4 +19,10 @@ public interface CategoryMapper {
      * @param category
      */
     void updateCategory(Category category);
+
+    /**
+     * 新增分类
+     * @param category
+     */
+    void insertCategory(Category category);
 }
