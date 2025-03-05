@@ -134,6 +134,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee queryById(Long id) {
         Employee employee = employeeMapper.selectById(id);
+        //可能查询到的employee中包含password密码,将密码进行设置,提高代码安全性
+        employee.setPassword("****");
         return employee;
     }
 
