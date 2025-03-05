@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/admin/category")
-@Api("分类管理")
+@Api(value = "分类管理")
 public class CategoryController {
 
     @Autowired
