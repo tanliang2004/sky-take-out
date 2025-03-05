@@ -16,6 +16,7 @@ import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Slf4j
 public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
@@ -89,6 +91,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         // 获取创建和修改员工的ID,使用ThreadLocal空间
         employee.setCreateUser(BaseContext.getCurrentId());
         employee.setUpdateUser(BaseContext.getCurrentId());
+        log.info("新增员工：{}",employee);
         //调用Mapper新增员工方法
         employeeMapper.insertEmp(employee);
     }
@@ -122,5 +125,34 @@ public class EmployeeServiceImpl implements EmployeeService {
         //使用动态SQL对员工信息进行修改
         Employee emp = Employee.builder().status(status).id(id).build();
         employeeMapper.updateEmp(emp);
+    }
+
+    /**
+     * 根据id查询员工
+     * @param id
+     */
+    @Override
+    public Employee queryById(Integer id) {
+        Employee employee = employeeMapper.selectById(id);
+        return employee;
+    }
+
+    /**
+     * 修改员工信息
+     * @param employeeDTO
+     */
+    @Override
+    public void edit(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        //将employeeDTO拷贝到employee
+        BeanUtils.copyProperties(employeeDTO,employee);
+        //设置用户信息修改时间
+        employee.setUpdateTime(LocalDateTime.now());
+        //获取修改员工信息账号ID
+        Long id = BaseContext.getCurrentId();
+        log.info("操作人ID：{}",id);
+        employee.setUpdateUser(id);
+        //调用Mapper方法进行数据库数据的修改
+        employeeMapper.updateEmp(employee);
     }
 }

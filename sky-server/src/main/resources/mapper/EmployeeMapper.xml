@@ -5,9 +5,10 @@
 
     <!--新增员工-->
     <insert id="insertEmp">
-        INSERT INTO employee(`name`, username, `password`, phone, sex, id_number, `status`, create_time, update_time)
+        INSERT INTO employee(`name`, username, `password`, phone, sex, id_number, `status`, create_time, update_time,
+                             create_user, update_user)
         VALUES (#{name}, #{username}, #{password}, #{phone}, #{sex}, #{idNumber}, #{status}, #{createTime},
-                #{updateTime});
+                #{updateTime}, #{createUser}, #{updateUser});
     </insert>
 
     <!--修改员工信息-->
@@ -31,6 +32,12 @@
             </if>
             <if test="status != null">
                 status = #{status},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser}
             </if>
         </set>
         <where>
