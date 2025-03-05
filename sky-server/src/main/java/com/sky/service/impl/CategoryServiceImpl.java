@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @ClassName CategoryServiceImpl
@@ -33,16 +32,17 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 菜品分类分页查询
+     *
      * @param categoryPageQueryDTO
      * @return
      */
     public PageResult page(CategoryPageQueryDTO categoryPageQueryDTO) {
         //使用PageHelper插件进行分页查询
-        PageHelper.startPage(categoryPageQueryDTO.getPage(),categoryPageQueryDTO.getPageSize());
+        PageHelper.startPage(categoryPageQueryDTO.getPage(), categoryPageQueryDTO.getPageSize());
         Page<Category> page = categoryMapper.selectAll(categoryPageQueryDTO);
         int pages = page.getPages();
         int pageSize = page.getPageSize();
-        log.info("菜品分类分页：{},{}",pages,pageSize);
+        log.info("菜品分类分页：{},{}", pages, pageSize);
         PageResult pageResult = new PageResult();
         pageResult.setTotal(page.getTotal());
         pageResult.setRecords(page.getResult());
@@ -51,6 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 菜品分类启用禁用
+     *
      * @param status
      * @param id
      */
@@ -62,11 +63,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 新增分类
+     *
      * @param categoryDTO
      */
     public void addCategory(CategoryDTO categoryDTO) {
         Category category = new Category();
-        BeanUtils.copyProperties(categoryDTO,category);
+        BeanUtils.copyProperties(categoryDTO, category);
         //设置分类创建时间和修改时间
         category.setCreateTime(LocalDateTime.now());
         category.setUpdateTime(LocalDateTime.now());
@@ -77,5 +79,39 @@ public class CategoryServiceImpl implements CategoryService {
         //设置分类的初始化状态为（禁用0）
         category.setStatus(0);
         categoryMapper.insertCategory(category);
+    }
+
+    /**
+     * 根据ID删除分类
+     *
+     * @param id
+     */
+    public void removeCategory(Long id) {
+        categoryMapper.deleteCategory(id);
+    }
+
+    /**
+     * 根据类型查询
+     * @param type
+     * @return
+     */
+    public Category getListType(Integer type) {
+        return categoryMapper.selectType(type);
+    }
+
+    /**
+     * 修改菜品分类
+     * @param categoryDTO
+     */
+    public void edit(CategoryDTO categoryDTO) {
+        //对象拷贝到Category对象中
+        Category category = new Category();
+        BeanUtils.copyProperties(categoryDTO,category);
+        //修改最后操作时间和最后操作用户
+        Long id = BaseContext.getCurrentId();
+        category.setUpdateTime(LocalDateTime.now());
+        category.setUpdateUser(id);
+        //调用Mapper方法
+        categoryMapper.updateCategory(category);
     }
 }

@@ -63,8 +63,46 @@ public class CategoryController {
      */
     @PostMapping
     @ApiOperation(value = "新增分类")
-    public Result addCategory(@RequestBody CategoryDTO categoryDTO) {
+    public Result save(@RequestBody CategoryDTO categoryDTO) {
         categoryService.addCategory(categoryDTO);
         return Result.success();
+    }
+
+    /**
+     * 根据ID删除分类
+     * @param id
+     * @return
+     */
+    @DeleteMapping
+    @ApiOperation(value = "删除分类")
+    public Result removeCategory(Long id) {
+        categoryService.removeCategory(id);
+        return Result.success();
+    }
+
+    /**
+     * 修改菜品分类
+     * @param categoryDTO
+     * @return
+     */
+    @PutMapping
+    @ApiOperation(value = "修改菜品分类")
+    public Result edit(@RequestBody CategoryDTO categoryDTO) {
+        log.info("修稿菜品分类数据：{}",categoryDTO);
+        categoryService.edit(categoryDTO);
+        return Result.success();
+    }
+
+    /**
+     * 根据类型查询
+     * @param type 1为菜品分类,2为类型分类
+     * @return
+     */
+    // TODO 功能业务存在问题
+//    @GetMapping("/list")
+    @ApiOperation(value = "根据类型查询")
+    public Result<Category> getListType(Integer type) {
+        Category category = categoryService.getListType(type);
+        return Result.success(category);
     }
 }
