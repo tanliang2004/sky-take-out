@@ -75,7 +75,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public void save(EmployeeDTO employeeDTO) {
-        //创建实体类employee
+        //创建实体类employee(使用AOP公共字段自动填充)
         Employee employee = new Employee();
         //将employeeDTO类拷贝到employee
         BeanUtils.copyProperties(employeeDTO, employee);
@@ -85,12 +85,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         //设置员工账号状态 1：启用 0：禁用
         employee.setStatus(StatusConstant.ENABLE);
         //设置创建时间
-        employee.setCreateTime(LocalDateTime.now());
+//        employee.setCreateTime(LocalDateTime.now());
         //设置修改时间
-        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
         // 获取创建和修改员工的ID,使用ThreadLocal空间
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+//        employee.setCreateUser(BaseContext.getCurrentId());
+//        employee.setUpdateUser(BaseContext.getCurrentId());
         log.info("新增员工：{}",employee);
         //调用Mapper新增员工方法
         employeeMapper.insertEmp(employee);
@@ -148,12 +148,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = new Employee();
         //将employeeDTO拷贝到employee
         BeanUtils.copyProperties(employeeDTO,employee);
-        //设置用户信息修改时间
-        employee.setUpdateTime(LocalDateTime.now());
+        //设置用户信息修改时间(使用AOP公共字段自动填充)
+//        employee.setUpdateTime(LocalDateTime.now());
         //获取修改员工信息账号ID
-        Long id = BaseContext.getCurrentId();
-        log.info("操作人ID：{}",id);
-        employee.setUpdateUser(id);
+//        Long id = BaseContext.getCurrentId();
+//        log.info("操作人ID：{}",id);
+//        employee.setUpdateUser(id);
         //调用Mapper方法进行数据库数据的修改
         employeeMapper.updateEmp(employee);
     }

@@ -82,13 +82,13 @@ public class CategoryServiceImpl implements CategoryService {
     public void addCategory(CategoryDTO categoryDTO) {
         Category category = new Category();
         BeanUtils.copyProperties(categoryDTO, category);
-        //设置分类创建时间和修改时间
-        category.setCreateTime(LocalDateTime.now());
-        category.setUpdateTime(LocalDateTime.now());
+        //设置分类创建时间和修改时间(使用AOP公共字段自动填充)
+//        category.setCreateTime(LocalDateTime.now());
+//        category.setUpdateTime(LocalDateTime.now());
         //获取当前登录账号ID,设置创建人ID和修改人ID
-        Long id = BaseContext.getCurrentId();
-        category.setCreateUser(id);
-        category.setUpdateUser(id);
+//        Long id = BaseContext.getCurrentId();
+//        category.setCreateUser(id);
+//        category.setUpdateUser(id);
         //设置分类的初始化状态为（禁用0）
         category.setStatus(0);
         categoryMapper.insertCategory(category);
@@ -134,10 +134,10 @@ public class CategoryServiceImpl implements CategoryService {
         //对象拷贝到Category对象中
         Category category = new Category();
         BeanUtils.copyProperties(categoryDTO, category);
-        //修改最后操作时间和最后操作用户
-        Long id = BaseContext.getCurrentId();
-        category.setUpdateTime(LocalDateTime.now());
-        category.setUpdateUser(id);
+        //修改最后操作时间和最后操作用户(使用AOP公共字段自动填充)
+//        Long id = BaseContext.getCurrentId();
+//        category.setUpdateTime(LocalDateTime.now());
+//        category.setUpdateUser(id);
         //调用Mapper方法
         categoryMapper.updateCategory(category);
     }
